@@ -1,0 +1,172 @@
+import numpy as np
+import dlib
+import cv2
+from imutils import face_utils
+import imutils
+import os
+import glob
+import tflearn
+import math
+import json
+##TRAINING-GETTING INPUTS FOR NEURALNETWORK
+def train_model():
+    detector = dlib.get_frontal_face_detector()
+    predictor = dlib.shape_predictor("land_mark/shape_predictor_68_face_landmarks.dat")
+    path_image_training="usuarios/"
+    output_dir="trainning_usuarios/"
+    dict_user={}
+    index_label=0
+    for image_dir in os.listdir(path_image_training):
+        image_output_dir = os.path.join(output_dir, os.path.basename(os.path.basename(image_dir)))
+        if not os.path.exists(image_output_dir):
+            os.makedirs(image_output_dir)
+        dict_user[index_label]=image_dir
+        index_label=index_label+1
+
+    image_paths = glob.glob(os.path.join(path_image_training, '**/*.jpg'))
+    train_points=[]
+    labels3=[]
+    labels_toSave=[]
+    for index_dic_users, users_name in enumerate(dict_user):
+        labels_row=[]
+        for value in range(0,len(dict_user)):
+            if value==index_dic_users:
+                labels_row.append(1)
+            else:
+                labels_row.append(0)
+        labels_toSave.append(labels_row)
+    labels_toSave=np.asarray(labels_toSave)
+
+    for index, image_path in enumerate(image_paths):
+        image_output_dir = os.path.join(output_dir, os.path.basename(os.path.dirname(image_path)))
+        output_path = os.path.join(image_output_dir, os.path.basename(image_path))
+        #path = os.path.join(output_path, output_path)
+        img = cv2.imread(image_path)
+        img = imutils.resize(img, width=400)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        rects = detector(gray, 0)
+        if len(rects) ==1:
+
+            for rect in rects:
+
+                (bX, bY, bW, bH) = face_utils.rect_to_bb(rect)
+                #print(bW)
+                if ((bW) == 149):
+                    shape = predictor(gray, rect)
+                    shape = face_utils.shape_to_np(shape)
+
+                    # loop over the (x, y)-coordinates for the facial landmarks
+                    # and draw each of them
+                    x1, y1 = shape[36]
+                    x2, y2 = shape[37]
+                    x3, y3 = shape[38]
+                    x4, y4 = shape[39]
+                    x5, y5 = shape[40]
+                    x6, y6 = shape[41]
+                    #OJO DERECHO
+                    x7, y7 = shape[42]
+                    x8, y8 = shape[43]
+                    x9, y9 = shape[44]
+                    x10, y10 = shape[45]
+                    x11, y11 = shape[46]
+                    x12, y12 = shape[47]
+                    #PUNTO CENTRAL NARIZ
+                    x13, y13 = shape[27]
+                    x14, y14 = shape[28]
+                    x15, y15 = shape[29]
+                    x16, y16 = shape[30]
+                    distance_1 = math.sqrt(
+                        (
+                                (pow((x1 - x4), 2))
+                                +
+                                (pow((y1 - y4), 2))
+                        )
+                    )
+                    distance_2 = math.sqrt(
+                        (
+                                (pow((x2 - x6), 2))
+                                +
+                                (pow((y2 - y6), 2))
+                        )
+                    )
+                    distance_3 = math.sqrt(
+                        (
+                                (pow((x3 - x5), 2))
+                                +
+                                (pow((y3 - y5), 2))
+                        )
+                    )
+                    #Distancias ojo derecho
+                    distance_4 = math.sqrt(
+                        (
+                                (pow((x7 - x10), 2))
+                                +
+                                (pow((y7 - y10), 2))
+                        )
+                    )
+                    distance_5 = math.sqrt(
+                        (
+                                (pow((x8 - x12), 2))
+                                +
+                                (pow((y8 - y12), 2))
+                        )
+                    )
+                    distance_6 = math.sqrt(
+                        (
+                                (pow((x9 - x11), 2))
+                                +
+                                (pow((y9 - y11), 2))
+                        )
+                    )
+
+                    distance_7 = math.sqrt(
+                        (
+                                (pow((x13 - x14), 2))
+                                +
+                                (pow((y13 - y14), 2))
+                        )
+                    )
+                    distance_8 = math.sqrt(
+                        (
+                                (pow((x13 - x14), 2))
+                                +
+                                (pow((y13 - y14), 2))
+                        )
+                    )
+
+
+
+
+                    train_points.append([distance_1,distance_2,distance_3,distance_4,distance_5,distance_6,distance_7])
+                    name=str(image_path)
+                    name=name.split("\\")
+                    print name[0]
+
+                    for index_dic_tr_users in range(0,len(dict_user)):
+                        if dict_user[index_dic_tr_users]==name[1] :
+                            labels3.append(labels_toSave[index_dic_tr_users])
+                            break
+
+                    print(image_path," \t imagen entrenada")
+
+
+
+    train_points=np.asarray(train_points)
+    labels3=np.asarray(labels3)
+
+    net = tflearn.input_data(shape=[None, 7])
+    net = tflearn.fully_connected(net, 32)
+    net = tflearn.fully_connected(net, 120)
+    net = tflearn.fully_connectedi(net, 180)
+    net = tflearn.fully_connected(net, 8, activation='softmax')
+    net = tflearn.regression(net)
+    # Define model
+    model = tflearn.DNN(net)
+    # Start training (apply gradient descent algorithm)
+    model.fit(train_points, labels3, n_epoch=1000, batch_size=10, show_metric=True)
+
+    with open('bd_FR/data.json', 'w') as fp:
+        json.dump(dict_user, fp)
+    model.save("model_FR_BS.tflearn")
+    return "[INFO] MODEL SAVED"
+train_model()
