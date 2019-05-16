@@ -1,2 +1,2 @@
-model_checkpoint_path: "/home/erickpc/Documentos/LMV_FR/model_FR_BS.tflearn"
-all_model_checkpoint_paths: "/home/erickpc/Documentos/LMV_FR/model_FR_BS.tflearn"
+model_checkpoint_path: "/home/mauricio/LMV_FR/model_FR_BS.tflearn"
+all_model_checkpoint_paths: "/home/mauricio/LMV_FR/model_FR_BS.tflearn"

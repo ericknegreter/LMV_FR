@@ -15,14 +15,14 @@ def camera_recognition():
     faces=[]
     count_faces=0
     number_test=0
-    with open('/home/erickpc/Documentos/LMV_FR/bd_FR/data.json', encoding='utf-8') as json_data:
+    with open('/home/mauricio/LMV_FR/bd_FR/data.json', encoding='utf-8') as json_data:
         dict_user = json.load(json_data)
 
     net = tflearn.input_data(shape=[None, 46])
     net = tflearn.fully_connected(net, 32)
     net = tflearn.fully_connected(net, 120)
     net = tflearn.fully_connected(net, 180)
-    net = tflearn.fully_connected(net, 7, activation='softmax')
+    net = tflearn.fully_connected(net, 10, activation='softmax')
     net = tflearn.regression(net)
     # Define model
     model = tflearn.DNN(net)
@@ -41,6 +41,7 @@ def camera_recognition():
     video_capture = cv2.VideoCapture(0)
     flag_photo_taken=False
     count_photos=0
+    count = 0
     while True:
         test_points = []
         ret, frame = video_capture.read()
@@ -459,6 +460,8 @@ def camera_recognition():
                     index_prediction=np.argmax(prediction)
                     print(prediction)
                     if prediction[0][index_prediction]>0.99:
+                        if dict_user[str(index_prediction)] == "Erick_Negrete":
+                            count+=1
                         print(dict_user[str(index_prediction)])
                         cv2.putText(frame, dict_user[str(index_prediction)], (bX - 10, bY - 10),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
@@ -470,6 +473,8 @@ def camera_recognition():
         cv2.imshow("Frame", frame)
         count_photos=count_photos+1
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+        if count == 40:
             break
         #if count_faces==20:
         #    break
