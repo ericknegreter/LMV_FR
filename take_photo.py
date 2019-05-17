@@ -41,4 +41,4 @@ def take_photo(Name_user):
             break
     cv2.destroyAllWindows()
     vs.stop()
-take_photo("Rocio_Sanchez")
+take_photo("Roberto_Mondejar")

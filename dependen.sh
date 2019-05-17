@@ -27,6 +27,12 @@ apt-get install -y --fix-missing \
     zip \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 apt-get install python3-opencv
+apt-get install apache2 libapache2-mod-php7.0 -y
+apt-get install mysql-server mysql-client -y
+apt-get install php7.0 -y
+apt-get install php7.0 php7.0-mysql php7.0-curl php7.0-json -y
+apache2 restart
+
 
 cd ~ && \
     mkdir -p dlib && \
