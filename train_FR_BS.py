@@ -475,14 +475,15 @@ def train_model():
 
     net = tflearn.input_data(shape=[None, 46])
     net = tflearn.fully_connected(net, 32)
-    net = tflearn.fully_connected(net, 120)
-    net = tflearn.fully_connected(net, 180)
-    net = tflearn.fully_connected(net, 10, activation='softmax')
+    net = tflearn.fully_connected(net, 64)
+    net = tflearn.fully_connected(net, 128)
+    net = tflearn.fully_connected(net, 256)
+    net = tflearn.fully_connected(net, 16, activation='softmax')
     net = tflearn.regression(net)
     # Define model
     model = tflearn.DNN(net)
     # Start training (apply gradient descent algorithm)
-    model.fit(train_points, labels3, n_epoch=10000, show_metric=True)
+    model.fit(train_points, labels3, n_epoch=25000, show_metric=True)
 
     with open('bd_FR/data.json', 'w') as fp:
         json.dump(dict_user, fp)

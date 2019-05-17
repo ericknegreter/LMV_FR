@@ -20,9 +20,10 @@ def camera_recognition():
 
     net = tflearn.input_data(shape=[None, 46])
     net = tflearn.fully_connected(net, 32)
-    net = tflearn.fully_connected(net, 120)
-    net = tflearn.fully_connected(net, 180)
-    net = tflearn.fully_connected(net, 10, activation='softmax')
+    net = tflearn.fully_connected(net, 64)
+    net = tflearn.fully_connected(net, 128)
+    net = tflearn.fully_connected(net, 256)
+    net = tflearn.fully_connected(net, 16, activation='softmax')
     net = tflearn.regression(net)
     # Define model
     model = tflearn.DNN(net)
@@ -42,6 +43,7 @@ def camera_recognition():
     flag_photo_taken=False
     count_photos=0
     count = 0
+    e_lab = ["Octavio_Garcia", "Roberto_x", "Mauricio_x", "Antony_Venancio", "Erick_Negrete"]
     while True:
         test_points = []
         ret, frame = video_capture.read()
@@ -55,7 +57,7 @@ def camera_recognition():
             for rect in rects:
 
                 (bX, bY, bW, bH) = face_utils.rect_to_bb(rect)
-                print( bW)
+                #print( bW)
                 if ((bW) == 149):
                     shape = predictor(gray, rect)
                     shape = face_utils.shape_to_np(shape)
@@ -458,11 +460,12 @@ def camera_recognition():
                     prediction=model.predict(test_points)
 
                     index_prediction=np.argmax(prediction)
-                    print(prediction)
+                    #print(prediction)
                     if prediction[0][index_prediction]>0.99:
-                        if dict_user[str(index_prediction)] == "Erick_Negrete":
-                            count+=1
-                        print(dict_user[str(index_prediction)])
+                        for name in e_lab:
+                            if dict_user[str(index_prediction)] == name:
+                                count+=1
+                        #print(dict_user[str(index_prediction)])
                         cv2.putText(frame, dict_user[str(index_prediction)], (bX - 10, bY - 10),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                         faces.append(dict_user[str(index_prediction)])
@@ -497,4 +500,5 @@ def camera_recognition():
     else:
         response=dict_user[str(user_MAX_index)]
     return response
-print(camera_recognition())
+camera_recognition()
+#print(camera_recognition())
