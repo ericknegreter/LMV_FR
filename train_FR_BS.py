@@ -478,7 +478,7 @@ def train_model():
     net = tflearn.fully_connected(net, 64)
     net = tflearn.fully_connected(net, 128)
     net = tflearn.fully_connected(net, 256)
-    net = tflearn.fully_connected(net, 16, activation='softmax')
+    net = tflearn.fully_connected(net, 17, activation='softmax')
     net = tflearn.regression(net)
     # Define model
     model = tflearn.DNN(net)

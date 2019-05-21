@@ -7,7 +7,7 @@ import os
 import time
 def take_photo(Name_user):
     PATH = str(Name_user)
-    PATH='usuarios/'+Name_user
+    PATH='/home/mauricio/Pictures/usuarios/'+Name_user
     if not os.path.exists(PATH):
         os.makedirs(PATH)
     ##TRAINING-GETTING INPUTS FOR NEURALNETWORK
@@ -32,7 +32,7 @@ def take_photo(Name_user):
                 if ((bW) == 149):
                     cv2.imwrite(PATH+"/"+Name_user+str(count_photos)+".jpg",frame)
                     count_photos=count_photos+1
-                    if count_photos==1000:
+                    if count_photos==5000:
                         flag_photo_taken=True
         cv2.imshow("Frame", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -41,4 +41,4 @@ def take_photo(Name_user):
             break
     cv2.destroyAllWindows()
     vs.stop()
-take_photo("Roberto_Mondejar")
+take_photo("Octavio_Garcia")

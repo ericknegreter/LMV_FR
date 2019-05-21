@@ -11,6 +11,39 @@ import tflearn
 import math
 import json
 
+#For connection to the server
+import mysql.connector
+from mysql.connector import Error
+import subprocess, datetime
+
+hosts = ('google.com', 'kernel.org', 'yahoo.com')
+localhost = ('10.0.5.246')
+e_lab = ["Octavio_Garcia", "Roberto_x", "Mauricio_x", "Antony_Venancio", "Erick_Negrete"]
+
+def ping(host):
+    ret = subprocess.call(['ping', '-c', '3', '-W', '5', host],
+            stdout=open('/dev/null', 'w'),
+            stderr=open('/dev/null', 'w'))
+    return ret == 0
+
+def net_is_up():
+    print("[%s] Checking if network is up..." % str(datetime.datetime.now()))
+
+    xstatus = 1
+    for h in hosts:
+        if ping(h):
+            if ping(localhost):
+                print("[%s] Network is up..." % str(datetime.datetime.now()))
+                xstatus = 0
+                break
+
+    if xstatus:
+        time.sleep(10)
+        print("[%s] Network is down..." % str(datetime.datetime.now()))
+        time.sleep(25)
+
+    return xstatus
+
 def camera_recognition():
     faces=[]
     count_faces=0
@@ -23,7 +56,7 @@ def camera_recognition():
     net = tflearn.fully_connected(net, 64)
     net = tflearn.fully_connected(net, 128)
     net = tflearn.fully_connected(net, 256)
-    net = tflearn.fully_connected(net, 16, activation='softmax')
+    net = tflearn.fully_connected(net, 17, activation='softmax')
     net = tflearn.regression(net)
     # Define model
     model = tflearn.DNN(net)
@@ -43,7 +76,7 @@ def camera_recognition():
     flag_photo_taken=False
     count_photos=0
     count = 0
-    e_lab = ["Octavio_Garcia", "Roberto_x", "Mauricio_x", "Antony_Venancio", "Erick_Negrete"]
+    #e_lab = ["Octavio_Garcia", "Roberto_x", "Mauricio_x", "Antony_Venancio", "Erick_Negrete"]
     while True:
         test_points = []
         ret, frame = video_capture.read()
@@ -465,7 +498,7 @@ def camera_recognition():
                         for name in e_lab:
                             if dict_user[str(index_prediction)] == name:
                                 count+=1
-                        #print(dict_user[str(index_prediction)])
+                        print(dict_user[str(index_prediction)])
                         cv2.putText(frame, dict_user[str(index_prediction)], (bX - 10, bY - 10),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                         faces.append(dict_user[str(index_prediction)])
@@ -477,12 +510,30 @@ def camera_recognition():
         count_photos=count_photos+1
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-        if count == 40:
+        if count == 50:
+            while True:
+                if(net_is_up() == 0):
+                    mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="LABORATORIOT4", database="LMV")
+                    mycursor = mydb.cursor()
+                    #Select to known if the laboratory door is open
+                    sql = "SELECT estado FROM e_extraccion WHERE dispositivo='puerta'"
+                    mycursor.execute(sql)
+                    records = mycursor.fetchall()
+                    print(mycursor.rowcount, "record selected")
+                    for row in records:
+                        estadolab = int(row[0])
+                    if estadolab == 0:
+                        os.system('gpio -g mode 22 out')
+                        sql2 = "UPDATE r_muestras SET estado = 1 WHERE dispositivo='puerta'"
+                        mycursor.execute(sql2)
+                        mydb.commit()
+                        print(mycursor.rowcount, "record affected")
+                        time.sleep(1)
+                        #END of mysql
+                    elif estadolab == 1:
+                        print("<p>close the laboratory door</p>")
+                    break
             break
-        #if count_faces==20:
-        #    break
-        #if count_photos==400:
-        #    break
     cv2.destroyAllWindows()
     vs.stop()
     faces=np.asarray(faces)
@@ -500,5 +551,21 @@ def camera_recognition():
     else:
         response=dict_user[str(user_MAX_index)]
     return response
-camera_recognition()
-#print(camera_recognition())
+
+while True:
+    if(net_is_up() == 0):
+        mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="LABORATORIOT4", database="LMV")
+        mycursor = mydb.cursor()
+        #Select to known if the principal door is open
+        sqlm = "SELECT estado FROM r_muestras WHERE dispositivo='puerta'"
+        mycursor.execute(sqlm)
+        recordsm = mycursor.fetchall()
+        print(mycursor.rowcount, "record selected")
+        for rowm in recordsm:
+            estadopri = int(rowm[0])
+        if estadopri == 1:
+            print("<p>The principal door is open</p>")
+        else:
+            break
+
+print(camera_recognition())
