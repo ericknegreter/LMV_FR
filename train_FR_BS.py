@@ -113,6 +113,18 @@ def train_model():
                     x38, y38 = shape[22]
                     x39, y39 = shape[24]
                     x40, y40 = shape[26]
+                    
+                    #TOTAL
+                    x41, y41 = shape[1]
+                    x42, y42 = shape[3]
+                    x43, y43 = shape[6]
+                    x44, y44 = shape[10]
+                    x45, y45 = shape[13]
+                    x46, y46 = shape[15]
+                    x47, y47 = shape[18]
+                    x48, y48 = shape[20]
+                    x49, y49 = shape[23]
+                    x50, y50 = shape[25]
 
                     #Distancia ojo izquido
                     distance_1 = math.sqrt(
@@ -450,6 +462,27 @@ def train_model():
                                 (pow((x38 - x40), 2))
                                 +
                                 (pow((y38 - y40), 2))
+                        )
+                    )
+
+                    #DISTANCIA TOTAL
+                    distance_47 = math.sqrt(
+                        (
+                                (pow((x27 - x41), 2))
+                                +
+                                (pow((y27 - y41), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x41 - x29), 2))
+                                +
+                                (pow((y41 - y29), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x29 - x42), 2))
+                                +
+                                (pow((y29 - y42), 2))
                         )
                     )
 
