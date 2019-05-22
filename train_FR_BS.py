@@ -660,7 +660,7 @@ def train_model():
     # Define model
     model = tflearn.DNN(net)
     # Start training (apply gradient descent algorithm)
-    model.fit(train_points, labels3, n_epoch=5000, show_metric=True)
+    model.fit(train_points, labels3, n_epoch=25000, show_metric=True)
 
     with open('bd_FR/data.json', 'w') as fp:
         json.dump(dict_user, fp)
