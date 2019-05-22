@@ -51,3 +51,4 @@ pip3 install imutils
 pip3 install tensorflow
 pip3 install tflearn
 pip3 install scipy
+pip3 install mysql-connector-python
