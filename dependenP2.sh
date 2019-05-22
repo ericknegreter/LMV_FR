@@ -40,3 +40,4 @@ pip install imutils
 pip install tensorflow
 pip install tflearn
 pip install scipy
+pip install mysql-connector-python

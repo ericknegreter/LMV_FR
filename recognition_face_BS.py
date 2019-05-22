@@ -48,7 +48,7 @@ def camera_recognition():
     faces=[]
     count_faces=0
     number_test=0
-    with open('/home/mauricio/LMV_FR/bd_FR/data.json', encoding='utf-8') as json_data:
+    with open('home/erickpc/LMV_FR/bd_FR/data.json', encoding='utf-8') as json_data:
         dict_user = json.load(json_data)
 
     net = tflearn.input_data(shape=[None, 47])
