@@ -51,7 +51,7 @@ def camera_recognition():
     with open('/home/mauricio/LMV_FR/bd_FR/data.json', encoding='utf-8') as json_data:
         dict_user = json.load(json_data)
 
-    net = tflearn.input_data(shape=[None, 46])
+    net = tflearn.input_data(shape=[None, 47])
     net = tflearn.fully_connected(net, 32)
     net = tflearn.fully_connected(net, 64)
     net = tflearn.fully_connected(net, 128)
@@ -76,7 +76,6 @@ def camera_recognition():
     flag_photo_taken=False
     count_photos=0
     count = 0
-    #e_lab = ["Octavio_Garcia", "Roberto_x", "Mauricio_x", "Antony_Venancio", "Erick_Negrete"]
     while True:
         test_points = []
         ret, frame = video_capture.read()
@@ -150,6 +149,18 @@ def camera_recognition():
                     x38, y38 = shape[22]
                     x39, y39 = shape[24]
                     x40, y40 = shape[26]
+
+                    #TOTAL
+                    x41, y41 = shape[1]
+                    x42, y42 = shape[3]
+                    x43, y43 = shape[6]
+                    x44, y44 = shape[10]
+                    x45, y45 = shape[13]
+                    x46, y46 = shape[15]
+                    x47, y47 = shape[18]
+                    x48, y48 = shape[20]
+                    x49, y49 = shape[23]
+                    x50, y50 = shape[25]
 
                     #Distancia ojo izquido
                     distance_1 = math.sqrt(
@@ -398,7 +409,7 @@ def camera_recognition():
                         )
                     )
 
-                     #DISTANCIA CARA
+                    #Distancia cara
                     distance_35 = math.sqrt(
                         (
                                 (pow((x27 - x28), 2))
@@ -428,7 +439,7 @@ def camera_recognition():
                         )
                     )
 
-                    #DISTANCIA CEJA IZQUIERDA
+                    #Distancia ceja izquierda
                     distance_39 = math.sqrt(
                         (
                                 (pow((x35 - x36), 2))
@@ -458,7 +469,7 @@ def camera_recognition():
                         )
                     )
 
-                    #DISTANCIA CEJA DERECHA
+                    #Distancia ceja derecha
                     distance_43 = math.sqrt(
                         (
                                 (pow((x33 - x38), 2))
@@ -488,7 +499,172 @@ def camera_recognition():
                         )
                     )
 
-                    test_points.append([distance_1,distance_2,distance_3,distance_4,distance_5,distance_6,distance_7,distance_8,distance_9,distance_10,distance_11,distance_12,distance_13,distance_14,distance_15,distance_16,distance_17,distance_18,distance_19,distance_20,distance_21,distance_22,distance_23,distance_24,distance_25,distance_26,distance_27,distance_28,distance_29,distance_30,distance_31,distance_32,distance_33,distance_34,distance_35,distance_36,distance_37,distance_38,distance_39,distance_40,distance_41,distance_42,distance_43,distance_44,distance_45,distance_46])
+                    #Distancia total
+                    distance_47 = math.sqrt(
+                        (
+                                (pow((x27 - x41), 2))
+                                +
+                                (pow((y27 - y41), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x41 - x29), 2))
+                                +
+                                (pow((y41 - y29), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x29 - x42), 2))
+                                +
+                                (pow((y29 - y42), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x42 - x23), 2))
+                                +
+                                (pow((y42 - y23), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x23 - x31), 2))
+                                +
+                                (pow((y23 - y31), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x31 - x43), 2))
+                                +
+                                (pow((y31 - y43), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x43 - x24), 2))
+                                +
+                                (pow((y43 - y24), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x24 - x34), 2))
+                                +
+                                (pow((y24 - y34), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x34 - x25), 2))
+                                +
+                                (pow((y34 - y25), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x25 - x44), 2))
+                                +
+                                (pow((y25 - y44), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x44 - x32), 2))
+                                +
+                                (pow((y44 - y32), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x32 - x26), 2))
+                                +
+                                (pow((y32 - y26), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x26 - x45), 2))
+                                +
+                                (pow((y26 - y45), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x45 - x30), 2))
+                                +
+                                (pow((y45 - y30), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x30 - x46), 2))
+                                +
+                                (pow((y30 - y46), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x46 - x28), 2))
+                                +
+                                (pow((y46 - y28), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x28 - x40), 2))
+                                +
+                                (pow((y28 - y40), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x40 - x50), 2))
+                                +
+                                (pow((y40 - y50), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x50 - x39), 2))
+                                +
+                                (pow((y50 - y39), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x39 - x49), 2))
+                                +
+                                (pow((y39 - y49), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x49 - x38), 2))
+                                +
+                                (pow((y49 - y38), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x38 - x37), 2))
+                                +
+                                (pow((y38 - y37), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x37 - x48), 2))
+                                +
+                                (pow((y37 - y48), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x48 - x36), 2))
+                                +
+                                (pow((y48 - y36), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x36 - x47), 2))
+                                +
+                                (pow((y36 - y47), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x47 - x35), 2))
+                                +
+                                (pow((y47 - y35), 2))
+                        )
+                    ) + math.sqrt(
+                        (
+                                (pow((x35 - x27), 2))
+                                +
+                                (pow((y35 - y27), 2))
+                        )
+                    )
+
+                    test_points.append([distance_1,distance_2,distance_3,distance_4,distance_5,distance_6,distance_7,distance_8,distance_9,distance_10,distance_11,distance_12,distance_13,distance_14,distance_15,distance_16,distance_17,distance_18,distance_19,distance_20,distance_21,distance_22,distance_23,distance_24,distance_25,distance_26,distance_27,distance_28,distance_29,distance_30,distance_31,distance_32,distance_33,distance_34,distance_35,distance_36,distance_37,distance_38,distance_39,distance_40,distance_41,distance_42,distance_43,distance_44,distance_45,distance_46,distance_47])
                     test_points=np.asarray(test_points)
                     prediction=model.predict(test_points)
 
