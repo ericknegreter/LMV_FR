@@ -11,7 +11,11 @@ import os
 
 class Ui_Form(object):
     def runFR(self):
-        os.system('python3 /home/erickpc/LMV_FR/recognition_face_BS.py')
+        mytext = self.text_name.toPlainText()
+        result = os.system('python3 /home/erickpc/LMV_FR/recognition_face_BS.py '+ mytext)
+    
+    def showText(self):
+         print(self.text_name.toPlainText() + 'todo bien')
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -37,8 +41,8 @@ class Ui_Form(object):
         self.pushButton_continue = QtWidgets.QPushButton(Form)
         self.pushButton_continue.setGeometry(QtCore.QRect(386, 610, 241, 25))
         self.pushButton_continue.setObjectName("pushButton_continue")
-        self.pushButton_continue.clicked.connect(self.runFR)
-
+        self.pushButton_continue.clicked.connect(self.showText)
+        #############################################################
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 

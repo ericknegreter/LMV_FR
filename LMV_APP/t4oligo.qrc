@@ -1,8 +1,0 @@
-<RCC>
-  <qresource prefix="prefijoNuevo">
-    <file>T4OLIGO SECURITY.png</file>
-  </qresource>
-  <qresource prefix="prefijoNuevo">
-    <file>T4oligo.jpeg</file>
-  </qresource>
-</RCC>
