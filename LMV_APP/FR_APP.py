@@ -8,11 +8,21 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
+import subprocess
+
+e_lab = 'Erick_Negrete'
 
 class Ui_Form(object):
     def runFR(self):
         mytext = self.text_name.toPlainText()
-        result = os.system('python3 /home/erickpc/LMV_FR/recognition_face_BS.py '+ mytext)
+        result = subprocess.check_output([sys.executable, '/home/erickpc/LMV_FR/recognition_face_BS.py'])
+        result = result.decode()
+        print(type(result))
+        print(type(e_lab))
+        print(result.rstrip())
+        print(e_lab)
+        if result.rstrip()  == e_lab:
+            print('si salio')
     
     def showText(self):
          print(self.text_name.toPlainText() + 'todo bien')
@@ -41,7 +51,7 @@ class Ui_Form(object):
         self.pushButton_continue = QtWidgets.QPushButton(Form)
         self.pushButton_continue.setGeometry(QtCore.QRect(386, 610, 241, 25))
         self.pushButton_continue.setObjectName("pushButton_continue")
-        self.pushButton_continue.clicked.connect(self.showText)
+        self.pushButton_continue.clicked.connect(self.runFR)
         #############################################################
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

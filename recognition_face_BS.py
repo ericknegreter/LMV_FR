@@ -17,7 +17,7 @@ from mysql.connector import Error
 import subprocess, datetime
 
 hosts = ('google.com', 'kernel.org', 'yahoo.com')
-localhost = ('10.0.5.246')
+localhost = ('192.168.1.109')
 e_lab = ["Octavio_Garcia", "Roberto_x", "Mauricio_x", "Antony_Venancio", "Erick_Negrete"]
 
 def ping(host):
@@ -27,19 +27,19 @@ def ping(host):
     return ret == 0
 
 def net_is_up():
-    print("[%s] Checking if network is up..." % str(datetime.datetime.now()))
+    #print("[%s] Checking if network is up..." % str(datetime.datetime.now()))
 
     xstatus = 1
     for h in hosts:
         if ping(h):
             if ping(localhost):
-                print("[%s] Network is up..." % str(datetime.datetime.now()))
+                #print("[%s] Network is up..." % str(datetime.datetime.now()))
                 xstatus = 0
                 break
 
     if xstatus:
         time.sleep(10)
-        print("[%s] Network is down..." % str(datetime.datetime.now()))
+        #print("[%s] Network is down..." % str(datetime.datetime.now()))
         time.sleep(25)
 
     return xstatus
@@ -48,7 +48,7 @@ def camera_recognition():
     faces=[]
     count_faces=0
     number_test=0
-    with open('bd_FR/data.json', encoding='utf-8') as json_data:
+    with open('/home/erickpc/LMV_FR/bd_FR/data.json', encoding='utf-8') as json_data:
         dict_user = json.load(json_data)
 
     net = tflearn.input_data(shape=[None, 47])
@@ -64,11 +64,11 @@ def camera_recognition():
     model.load("model_FR_BS.tflearn")
 
 
-    print("[INFO] loading facial landmark predictor...")
+    #print("[INFO] loading facial landmark predictor...")
     detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor("land_mark/shape_predictor_68_face_landmarks.dat")
+    predictor = dlib.shape_predictor("/home/erickpc/LMV_FR/land_mark/shape_predictor_68_face_landmarks.dat")
 
-    print("[INFO] camera sensor warming up...")
+    #print("[INFO] camera sensor warming up...")
     vs = VideoStream(src=1).start()
     # vs = VideoStream(usePiCamera=True).start() # Raspberry Pi
     time.sleep(2.0)
@@ -674,7 +674,7 @@ def camera_recognition():
                         for name in e_lab:
                             if dict_user[str(index_prediction)] == name:
                                 count+=1
-                        print(dict_user[str(index_prediction)])
+                        #print(dict_user[str(index_prediction)])
                         cv2.putText(frame, dict_user[str(index_prediction)], (bX - 10, bY - 10),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                         faces.append(dict_user[str(index_prediction)])
@@ -687,28 +687,28 @@ def camera_recognition():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         if count == 50:
-            while True:
-                if(net_is_up() == 0):
-                    mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="LABORATORIOT4", database="LMV")
-                    mycursor = mydb.cursor()
-                    #Select to known if the laboratory door is open
-                    sql = "SELECT estado FROM e_extraccion WHERE dispositivo='puerta'"
-                    mycursor.execute(sql)
-                    records = mycursor.fetchall()
-                    print(mycursor.rowcount, "record selected")
-                    for row in records:
-                        estadolab = int(row[0])
-                    if estadolab == 0:
-                        os.system('gpio -g mode 22 out')
-                        sql2 = "UPDATE r_muestras SET estado = 1 WHERE dispositivo='puerta'"
-                        mycursor.execute(sql2)
-                        mydb.commit()
-                        print(mycursor.rowcount, "record affected")
-                        time.sleep(1)
-                        #END of mysql
-                    elif estadolab == 1:
-                        print("<p>close the laboratory door</p>")
-                    break
+            #while True:
+            #    if(net_is_up() == 0):
+            #        #mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="LABORATORIOT4", database="LMV")
+            #        mydb = mysql.connector.connect(host="192.168.1.109", user="LMV_ADMIN", passwd="LABORATORIOT4", database="LMV")
+            #        mycursor = mydb.cursor()
+            #        #Select to known if the laboratory door is open
+            #        sql = "SELECT estado FROM e_extraccion WHERE dispositivo='puerta'"
+            #        mycursor.execute(sql)
+            #        records = mycursor.fetchall()
+            #        #print(mycursor.rowcount, "record selected")
+            #        for row in records:
+            #            estadolab = int(row[0])
+            #        if estadolab == 0:
+            #            #os.system('gpio -g mode 22 out')
+            #            sql2 = "UPDATE r_muestras SET estado = 1 WHERE dispositivo='puerta'"
+            #            mycursor.execute(sql2)
+            #            mydb.commit()
+            #            #print(mycursor.rowcount, "record affected")
+            #            #END of mysql
+            #        elif estadolab == 1:
+            #            print("<p>close the laboratory door</p>")
+            #        break
             break
     cv2.destroyAllWindows()
     vs.stop()
@@ -728,20 +728,20 @@ def camera_recognition():
         response=dict_user[str(user_MAX_index)]
     return response
 
-while True:
-    if(net_is_up() == 0):
-        mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="LABORATORIOT4", database="LMV")
-        mycursor = mydb.cursor()
-        #Select to known if the principal door is open
-        sqlm = "SELECT estado FROM r_muestras WHERE dispositivo='puerta'"
-        mycursor.execute(sqlm)
-        recordsm = mycursor.fetchall()
-        print(mycursor.rowcount, "record selected")
-        for rowm in recordsm:
-            estadopri = int(rowm[0])
-        if estadopri == 1:
-            print("<p>The principal door is open</p>")
-        else:
-            break
-
+#while True:
+#    if(net_is_up() == 0):
+#        #mydb = mysql.connector.connect(host="10.0.5.246", user="LMV_ADMIN", passwd="LABORATORIOT4", database="LMV")
+#        mydb = mysql.connector.connect(host="192.168.1.109", user="LMV_ADMIN", passwd="LABORATORIOT4", database="LMV")
+#        mycursor = mydb.cursor()
+#        #Select to known if the principal door is open
+#        sqlm = "SELECT estado FROM r_muestras WHERE dispositivo='puerta'"
+#        mycursor.execute(sqlm)
+#        recordsm = mycursor.fetchall()
+#        #print(mycursor.rowcount, "record selected")
+#        for rowm in recordsm:
+#            estadopri = int(rowm[0])
+#        if estadopri == 1:
+#            print("<p>The principal door is open</p>")
+#        else:
+#            break
 print(camera_recognition())
