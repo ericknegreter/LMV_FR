@@ -674,17 +674,20 @@ def camera_recognition():
                         for name in e_lab:
                             if dict_user[str(index_prediction)] == name:
                                 count+=1
-                        #print(dict_user[str(index_prediction)])
-                        cv2.putText(frame, dict_user[str(index_prediction)], (bX - 10, bY - 10),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                        print(dict_user[str(index_prediction)])
+                        #cv2.putText(frame, dict_user[str(index_prediction)], (bX - 10, bY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                        cv2.putText(frame, "OK", (bX - 10, bY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                         faces.append(dict_user[str(index_prediction)])
                         count_faces=count_faces+1
+                        print(count_faces)
         else:
             cv2.putText(frame, "More than 1 face... ", (0 - 10, 0 - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
         cv2.imshow("Frame", frame)
         count_photos=count_photos+1
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+        if count_faces == 100:
             break
         if count == 50:
             #while True:

@@ -16,12 +16,9 @@ class Ui_Form(object):
     def runFR(self):
         mytext = self.text_name.toPlainText()
         result = subprocess.check_output([sys.executable, '/home/erickpc/LMV_FR/recognition_face_BS.py'])
-        result = result.decode()
-        print(type(result))
-        print(type(e_lab))
-        print(result.rstrip())
-        print(e_lab)
-        if result.rstrip()  == e_lab:
+        resul = result.decode()
+        result = resul.rstrip()
+        if result  == e_lab:
             print('si salio')
     
     def showText(self):
