@@ -15,9 +15,10 @@ e_lab = 'Erick_Negrete'
 class Ui_Form(object):
     def runFR(self):
         mytext = self.text_name.toPlainText()
-        result = subprocess.check_output([sys.executable, '/home/erickpc/LMV_FR/recognition_face_BS.py'])
+        result = subprocess.check_output([sys.executable, '/home/mauricio/LMV_FR/recognition_face_BS.py'])
         resul = result.decode()
         result = resul.rstrip()
+        print(result)
         if result  == e_lab:
             print('si salio')
     
@@ -27,6 +28,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(1362, 836)
+        #Form.resize(2000,1000)
         self.label_picu = QtWidgets.QLabel(Form)
         self.label_picu.setGeometry(QtCore.QRect(386, 9, 501, 441))
         self.label_picu.setObjectName("label_picu")

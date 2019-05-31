@@ -48,7 +48,7 @@ def camera_recognition():
     faces=[]
     count_faces=0
     number_test=0
-    with open('/home/erickpc/LMV_FR/bd_FR/data.json', encoding='utf-8') as json_data:
+    with open('/home/mauricio/LMV_FR/bd_FR/data.json', encoding='utf-8') as json_data:
         dict_user = json.load(json_data)
 
     net = tflearn.input_data(shape=[None, 47])
@@ -66,7 +66,7 @@ def camera_recognition():
 
     #print("[INFO] loading facial landmark predictor...")
     detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor("/home/erickpc/LMV_FR/land_mark/shape_predictor_68_face_landmarks.dat")
+    predictor = dlib.shape_predictor("/home/mauricio/LMV_FR/land_mark/shape_predictor_68_face_landmarks.dat")
 
     #print("[INFO] camera sensor warming up...")
     vs = VideoStream(src=1).start()
@@ -674,12 +674,12 @@ def camera_recognition():
                         for name in e_lab:
                             if dict_user[str(index_prediction)] == name:
                                 count+=1
-                        print(dict_user[str(index_prediction)])
+                        #print(dict_user[str(index_prediction)])
                         #cv2.putText(frame, dict_user[str(index_prediction)], (bX - 10, bY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                         cv2.putText(frame, "OK", (bX - 10, bY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                         faces.append(dict_user[str(index_prediction)])
                         count_faces=count_faces+1
-                        print(count_faces)
+                        #print(count_faces)
         else:
             cv2.putText(frame, "More than 1 face... ", (0 - 10, 0 - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
