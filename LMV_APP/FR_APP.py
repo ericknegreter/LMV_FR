@@ -9,18 +9,24 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 import subprocess
+from gtts import gTTS
 
 e_lab = 'Erick_Negrete'
 
 class Ui_Form(object):
     def runFR(self):
-        mytext = self.text_name.toPlainText()
-        result = subprocess.check_output([sys.executable, '/home/mauricio/LMV_FR/recognition_face_BS.py'])
+        texto = self.text_name.toPlainText()
+        result = subprocess.check_output([sys.executable, '/home/erickpc/LMV_FR/recognition_face_BS.py'])
         resul = result.decode()
         result = resul.rstrip()
         print(result)
         if result  == e_lab:
             print('si salio')
+        mytext = ('Bienvenido ' + texto)
+        language = 'es'
+        myobj = gTTS(text=mytext, lang=language, slow=False)
+        myobj.save("welcome.mp3")
+        os.system("mpg321 welcome.mp3")
     
     def showText(self):
          print(self.text_name.toPlainText() + 'todo bien')

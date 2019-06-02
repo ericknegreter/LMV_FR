@@ -32,7 +32,7 @@ apt-get install mysql-server mysql-client -y
 apt-get install php7.0 -y
 apt-get install php7.0 php7.0-mysql php7.0-curl php7.0-json -y
 apache2 restart
-
+apt-get install mpg321
 
 cd ~ && \
     mkdir -p dlib && \
@@ -52,3 +52,4 @@ pip3 install tensorflow
 pip3 install tflearn
 pip3 install scipy
 pip3 install mysql-connector-python
+pip3 install gTTS
