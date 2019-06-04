@@ -48,7 +48,7 @@ def camera_recognition():
     faces=[]
     count_faces=0
     number_test=0
-    with open('/home/erickpc/LMV_FR/bd_FR/data.json', encoding='utf-8') as json_data:
+    with open('/home/mauricio/LMV_FR/bd_FR/data.json', encoding='utf-8') as json_data:
         dict_user = json.load(json_data)
 
     net = tflearn.input_data(shape=[None, 47])
@@ -56,7 +56,7 @@ def camera_recognition():
     net = tflearn.fully_connected(net, 64)
     net = tflearn.fully_connected(net, 128)
     net = tflearn.fully_connected(net, 256)
-    net = tflearn.fully_connected(net, 17, activation='softmax')
+    net = tflearn.fully_connected(net, 7, activation='softmax')
     net = tflearn.regression(net)
     # Define model
     model = tflearn.DNN(net)
@@ -66,7 +66,7 @@ def camera_recognition():
 
     #print("[INFO] loading facial landmark predictor...")
     detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor("/home/erickpc/LMV_FR/land_mark/shape_predictor_68_face_landmarks.dat")
+    predictor = dlib.shape_predictor("/home/mauricio/LMV_FR/land_mark/shape_predictor_68_face_landmarks.dat")
 
     #print("[INFO] camera sensor warming up...")
     vs = VideoStream(src=1).start()
