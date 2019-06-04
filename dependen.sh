@@ -53,3 +53,4 @@ pip3 install tflearn
 pip3 install scipy
 pip3 install mysql-connector-python
 pip3 install gTTS
+pip3 install paramiko

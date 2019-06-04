@@ -10,23 +10,35 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 import subprocess
 from gtts import gTTS
-
-e_lab = 'Erick_Negrete'
+import paramiko
+import sys
+import mysql.connector
 
 class Ui_Form(object):
     def runFR(self):
         texto = self.text_name.toPlainText()
-        result = subprocess.check_output([sys.executable, '/home/erickpc/LMV_FR/recognition_face_BS.py'])
+        result = subprocess.check_output([sys.executable, '/home/mauricio/LMV_FR/recognition_face_BS.py'])
         resul = result.decode()
         result = resul.rstrip()
         print(result)
-        if result  == e_lab:
-            print('si salio')
-        mytext = ('Bienvenido ' + texto)
-        language = 'es'
-        myobj = gTTS(text=mytext, lang=language, slow=False)
-        myobj.save("welcome.mp3")
-        os.system("mpg321 welcome.mp3")
+        name_corr = texto.split()
+        name_corr = "_".join(name_corr)
+        print(name_corr)
+        if result  == name_corr:
+            mytext = ('Bienvenido ' + texto)
+            language = 'es'
+            myobj = gTTS(text=mytext, lang=language, slow=False)
+            myobj.save("welcome.mp3")
+            os.system("mpg321 welcome.mp3")
+            #proxy = None
+            #client = paramiko.SSHClient()
+            #client.load_system_host_keys()
+            #client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            #client.connect(hostname='10.0.5.122', username='pi', password='t4oligo', proxy=proxy)
+            #ssh_stdin, ssh_stdout, ssh_stderr = client.exec_command('python3 /home/pi/Documents/entrada_lab/open_door1.py')
+            sys.exit(app.exec_())
+        else:
+            QMessageBox.question(self, 'Mensaje PyQt5', "¿Te gusta PyQt5??", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
     
     def showText(self):
          print(self.text_name.toPlainText() + 'todo bien')
@@ -64,7 +76,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.label_picu.setText(_translate("Form", "<html><head/><body><p><img src=T4oligo.jpeg></p></body></html>"))
+        self.label_picu.setText(_translate("Form", "<html><head/><body><p><img src=blackstar.png></p></body></html>"))
         self.label_name.setText(_translate("Form", "Ingresa tu nombre"))
         self.pushButton_cancel.setText(_translate("Form", "Cancelar"))
         self.pushButton_continue.setText(_translate("Form", "Continuar"))
