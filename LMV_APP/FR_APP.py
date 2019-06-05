@@ -17,7 +17,11 @@ import paramiko
 import sys
 import mysql.connector
 
+global intent
+
 class Ui_Form(object):
+    intent = 0
+
     def showmessage(self, title, message):
         msgBox = QtWidgets.QMessageBox()
         msgBox.setIcon(QtWidgets.QMessageBox.Question)
