@@ -7,6 +7,9 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot
 import os
 import subprocess
 from gtts import gTTS
@@ -15,9 +18,22 @@ import sys
 import mysql.connector
 
 class Ui_Form(object):
+    def showmessage(self, title, message):
+        msgBox = QtWidgets.QMessageBox()
+        msgBox.setIcon(QtWidgets.QMessageBox.Question)
+        msgBox.setWindowTitle(title)
+        msgBox.setGeometry(1000, 500, 1400, 600)
+        msgBox.setText(message)
+        msgBox.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        resp = msgBox.exec_()
+        if resp == QtWidgets.QMessageBox.Yes:
+            return 1
+        else:
+            return 0
+
     def runFR(self):
         texto = self.text_name.toPlainText()
-        result = subprocess.check_output([sys.executable, '/home/mauricio/LMV_FR/recognition_face_BS.py'])
+        result = subprocess.check_output([sys.executable, '/home/erickpc/LMV_FR/recognition_face_BS.py'])
         resul = result.decode()
         result = resul.rstrip()
         print(result)
@@ -38,7 +54,10 @@ class Ui_Form(object):
             #ssh_stdin, ssh_stdout, ssh_stderr = client.exec_command('python3 /home/pi/Documents/entrada_lab/open_door1.py')
             sys.exit(app.exec_())
         else:
-            QMessageBox.question(self, 'Mensaje PyQt5', "¿Te gusta PyQt5??", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            m = self.showmessage('Invalid user', 'Would you like try again?')
+            if m == 0:
+                sys.exit(app.exec_())
+
     
     def showText(self):
          print(self.text_name.toPlainText() + 'todo bien')
